@@ -1,2 +1,2 @@
-# Bird_Classifier
-Classification of Bird species
+# Birds_Classifier
+Classification of Birds species
