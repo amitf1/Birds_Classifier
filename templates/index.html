@@ -1,23 +1,43 @@
 
 <!doctype html>
-<title>Classifly</title>
-<h2>Select a file to upload</h2>
-<p>
-	{% with messages = get_flashed_messages() %}
-	  {% if messages %}
-        Label: {{ messages[0] }}
-        Accuracy: {{ messages[1] }}
+<h1 style="text-align: center;">Birdify.ai</h1>
 
-	  {% endif %}
-	{% endwith %}
-</p>
+<p style="font-size: 1.5em;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://www.petguide.com/wp-content/uploads/2018/11/gloster-canary.jpg" alt="Birdify.ai" width="303" height="200" /></p>
+
+<h3 style="text-align: center;">Select an Image File</h3>
+
 <form method="post" action="/" enctype="multipart/form-data">
     <dl>
-	<p>
+	<p style="text-align: center; margin-left: 157px;">
 		<input type="file" name="file" autocomplete="off" required>
 	</p>
     </dl>
-    <p>
-	<input type="submit" value="Submit">
+    <p style="text-align: center;">
+		<input type="submit" value="Submit">
     </p>
 </form>
+
+<h3 style="text-align: center;">OR...<br>
+Take a Web-Cam Picture</h3>
+
+<form method="post" action="/takepic" enctype="multipart/form-data">
+		<p style="text-align: center;">
+			<input type="submit" /></p>
+</form>
+
+<h2 style="text-align: center;">
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+        Bird's Species:
+	  {% endif %}
+	{% endwith %}
+</h2>
+
+<h3 style="text-align: center;">
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+        Label: {{ messages[0] }}<br>
+        Confidence: {{ messages[1] }}%
+	  {% endif %}
+	{% endwith %}
+</h3>

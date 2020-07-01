@@ -36,50 +36,58 @@ def submit_file():
             flash(acc)
             flash(filename)
             return redirect('/')
-# @app.route('/', methods=['POST'])
-# def submit_file():
-#     filename = take_pic()
-#
-#     label, acc = getPrediction(filename)
-#     flash(label)
-#     flash(acc)
-#     flash(filename)
-#     return redirect('/')
 
-# def take_pic():
-#     cam = cv2.VideoCapture(0)
-#
-#     cv2.namedWindow("Take a bird's picture!")
-#
-#     img_counter = 0
-#
-#     while True:
-#
-#         ret, frame = cam.read()
-#
-#         if not ret:
-#             print("Failed to grab a frame")
-#             break
-#
-#         cv2.imshow("Take a bird's picture!", frame)
-#         k = cv2.waitKey(1)
-#
-#         if k % 256 == 27:
-#             # ESC pressed
-#             print("Escape hit, closing camera!")
-#             break
-#
-#         elif k % 256 == 32:
-#             # SPACE pressed
-#             img_name = f"bird_img_{img_counter}.png"
-#             cv2.imwrite('data/Predicions/'+img_name, frame)
-#             print(f"{img_name} written! You may take another one OR exit by \
-#     hitting ESC")
-#             img_counter += 1
-#
-#     cam.release()
-#     cv2.destroyAllWindows()
-#     return img_name
+
+@app.route('/takepic', methods=['POST'])
+def submit_shoot():
+    filename = take_pic()
+
+    if filename:
+        label, acc = getPrediction(filename)
+        flash(label)
+        flash(acc)
+        flash(filename)
+        return redirect('/')
+
+    else:
+        return redirect('/')
+
+
+def take_pic():
+    cam = cv2.VideoCapture(0)
+
+    cv2.namedWindow("Hit Space-Bar to take a bird's picture!")
+
+    img_counter = len(os.listdir(app.config['UPLOAD_FOLDER']))
+    img_name = None
+
+    while True:
+
+        ret, frame = cam.read()
+
+        if not ret:
+            print("Failed to grab a frame")
+            break
+
+        cv2.imshow("Hit Space-Bar to take a bird's picture!", frame)
+        k = cv2.waitKey(1)
+
+        if k % 256 == 27:
+            # ESC pressed
+            print("Escape hit, closing camera!")
+            break
+
+        elif k % 256 == 32:
+            # SPACE pressed
+            img_name = f"bird_img_{img_counter}.png"
+            cv2.imwrite(app.config['UPLOAD_FOLDER']+'/'+img_name, frame)
+            print(f"{img_name} written!")
+            break
+
+    cam.release()
+    cv2.destroyAllWindows()
+    return img_name
+
 
 if __name__ == "__main__":
     app.run()
