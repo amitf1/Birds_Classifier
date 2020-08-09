@@ -1,13 +1,9 @@
-from flask import Flask, render_template, request, redirect, flash, url_for
-import prediction_api
-import urllib.request
+from flask import render_template, request, redirect, flash
 from app import app
 from werkzeug.utils import secure_filename
-from prediction_api import getPrediction
+from prediction_api import get_prediction
 import os
-import  matplotlib.pyplot as plt
 import cv2
-import numpy as np
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
@@ -31,7 +27,7 @@ def submit_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # im =np.array(cv2.imread(filename), dtype=float)
             # plt.imshow(im)
-            label, acc = getPrediction(filename)
+            label, acc = get_prediction(filename)
             flash(label)
             flash(acc)
             flash(filename)
@@ -43,7 +39,7 @@ def submit_shoot():
     filename = take_pic()
 
     if filename:
-        label, acc = getPrediction(filename)
+        label, acc = get_prediction(filename)
         flash(label)
         flash(acc)
         flash(filename)
@@ -56,7 +52,7 @@ def submit_shoot():
 def take_pic():
     cam = cv2.VideoCapture(0)
 
-    cv2.namedWindow("Hit Space-Bar to take a bird's picture!")
+    # cv2.namedWindow("Hit Space-Bar to take a bird's picture!")
 
     img_counter = len(os.listdir(app.config['UPLOAD_FOLDER']))
     img_name = None
@@ -82,10 +78,10 @@ def take_pic():
             img_name = f"bird_img_{img_counter}.png"
             cv2.imwrite(app.config['UPLOAD_FOLDER']+'/'+img_name, frame)
             print(f"{img_name} written!")
-            break
 
-    cam.release()
+            break
     cv2.destroyAllWindows()
+    cam.release()
     return img_name
 
 

@@ -1,13 +1,9 @@
 import wikipedia
 import webbrowser
-import os
 
-species = os.listdir( 'Birds_Classifier\\data\\200_species_train')
-species = sorted(species)
 
-# prediction = "ALBATROSS"
-
-for i, spec in enumerate(species):
+def open_wiki(spec):
+    # for i, spec in enumerate(species):
     if spec == "BLACKBURNIAM WARBLER":
         spec = "BLACKBURNIAN WARBLER"
     elif spec == "CURL CRESTED ARACURI":
@@ -61,9 +57,7 @@ for i, spec in enumerate(species):
     elif spec == "VERMILION FLYCATHER":
         spec = "VERMILION FLYCATCHER"
 
-    print(i, ") ", spec)
     search_res = wikipedia.search(spec)[0] if spec != "RUFOUS MOTMOT" else wikipedia.search(spec)[1]
 
     url = wikipedia.WikipediaPage(title=search_res).url
-    print(url)
-    webbrowser.open(url, new=1)
+    webbrowser.open_new_tab(url)
